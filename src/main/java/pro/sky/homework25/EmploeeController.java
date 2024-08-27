@@ -14,7 +14,8 @@ public class EmploeeController {
     }
 
     @GetMapping("/add")
-    public String addPerson(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
+    public String addPerson(@RequestParam("firstName") String firstName,
+                            @RequestParam("lastName") String lastName) {
         try{
         return serv.addEmploee(firstName, lastName);
         } catch (EmployeeAlreadyAddedException e) {
@@ -24,7 +25,8 @@ public class EmploeeController {
         }
     }
     @GetMapping("/del")
-    public String delPerson(String firstName, String lastName) {
+    public String delPerson(@RequestParam("firstName") String firstName,
+                            @RequestParam("lastName") String lastName) {
         try {
             return serv.delEmploee(firstName, lastName);
         } catch (EmployeeNotExistException e) {
@@ -32,7 +34,8 @@ public class EmploeeController {
         }
     }
     @GetMapping("/find")
-    public String findPerson(String firstName, String lastName) {
+    public String findPerson(@RequestParam("firstName") String firstName,
+                             @RequestParam("lastName") String lastName) {
         try {
             return serv.findEmploee(firstName, lastName);
         } catch (EmployeeNotExistException e) {
