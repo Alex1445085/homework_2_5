@@ -5,10 +5,14 @@ import java.util.Objects;
 public class Emploee {
     private String firstName;
     private String lastName;
+    private static int countId = 0;
+    private int id;
 
     public Emploee(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.countId++;
+        this.id = countId;
     }
 
     public String getFirstName() {
@@ -17,6 +21,7 @@ public class Emploee {
     public String getLastName() {
         return this.lastName;
     }
+    public Integer getId() { return this.id; }
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -26,7 +31,7 @@ public class Emploee {
 
     @Override
     public String toString() {
-        return this.firstName + " " + this.lastName + ", ";
+        return this.firstName + " " + this.lastName + " ";
     }
     @Override
     public boolean equals(Object obj) {

@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/person")
 public class EmploeeController {
@@ -22,6 +24,8 @@ public class EmploeeController {
             return "Такой сотрудник уже существует.";
         } catch (EmployeeStorageIsFullException e) {
             return "Нельзя добавить сотрудника, полный штат.";
+        } catch (BadRequestException e) {
+            return "BadRequestException";
         }
     }
     @GetMapping("/del")
@@ -43,7 +47,7 @@ public class EmploeeController {
         }
     }
     @GetMapping("/list")
-    public String listEmploee(){
+    public Map listEmploee(){
         return serv.listOfEmploee();
     }
 

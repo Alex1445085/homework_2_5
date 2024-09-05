@@ -1,5 +1,4 @@
 package pro.sky.homework25;
-
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -8,20 +7,23 @@ import java.util.*;
 public class EmploeeServiceImpl implements EmploeeServise {
 
     int maxEmploee = 15;
-    List<Emploee> emploees = new ArrayList<>();
+    Map<Emploee, Integer> emploees = new HashMap<>();
 
     @Override
     public String addEmploee(String firstName, String lastName) {
+        if (firstName.isEmpty() || lastName.isEmpty()) {
+            throw new BadRequestException();
+        }
         Emploee temp = new Emploee(firstName, lastName);
         String word = "";
         if (emploees.size() >= maxEmploee) {
             throw new EmployeeStorageIsFullException();
         }
-        if (findPerson(temp)) {
+        if (emploees.containsKey(temp)) {
             throw new EmployeeAlreadyAddedException();
         } else {
-            emploees.add(temp);
-            word = "success, сотрудник " + temp.toString() + " добавлен.";
+            emploees.put(temp, temp.getId());
+            word = "Success, сотрудник " + temp.toString() + ", id = " + temp.getId() + " добавлен.";
         }
         return word;
     }
@@ -29,15 +31,15 @@ public class EmploeeServiceImpl implements EmploeeServise {
     @Override
     public String findEmploee(String firstName, String lastName) {
         Emploee temp = new Emploee(firstName, lastName);
-        if (!findPerson(temp)) {
+        if (!emploees.containsKey(temp)) {
             throw new EmployeeNotExistException();
-        } else { return "Сотрудник " + temp.toString() + " находится в штате."; }
+        } else { return "Сотрудник " + temp.toString() + ", id = " + emploees.get(temp) + " находится в штате."; }
     }
 
     @Override
     public String delEmploee(String firstName, String lastName) {
         Emploee temp = new Emploee(firstName, lastName);
-        if (!findPerson(temp)) {
+        if (!emploees.containsKey(temp)) {
             throw new EmployeeNotExistException();
         } else {
             emploees.remove(temp);
@@ -45,31 +47,26 @@ public class EmploeeServiceImpl implements EmploeeServise {
          }
     }
 
-    public String listOfEmploee() {
-        String temporary = "";
-        for (Emploee temp : emploees) {
-            temporary = temporary + ("\n" + temp.toString());
-        }
-        return temporary;
-    }
+    public Map listOfEmploee() { return emploees; }
 
     @Override
     public void emploeesAbOvo() {
-        emploees.add(new Emploee("Ivanov", "Goga"));
-        emploees.add(new Emploee("Gamov", "Petr"));
-        emploees.add(new Emploee("Kukin", "Andr"));
-        emploees.add(new Emploee("Vasin", "Alex"));
-        emploees.add(new Emploee("Soev", "Igor"));
-        emploees.add(new Emploee("Sonin", "Petr"));
-        emploees.add(new Emploee("Virko", "Ant"));
+        Emploee temp = new Emploee("Ivanov", "Goga");
+        buildEmploee(temp);
+        temp = new Emploee("Gamov", "Petr");
+        buildEmploee(temp);
+        temp = new Emploee("Kukin", "Andr");
+        buildEmploee(temp);
+        temp = new Emploee("Vasin", "Alex");
+        buildEmploee(temp);
+        temp = new Emploee("Soev", "Igor");
+        buildEmploee(temp);
+        temp = new Emploee("Sonin", "Petr");
+        buildEmploee(temp);
+        temp = new Emploee("Virdjn", "Ant");
+        buildEmploee(temp);
     }
 
-    public boolean findPerson(Emploee temp) {
-        boolean tr = false;
-        for (int i = 0; i < emploees.size(); i++) {
-            if (temp.equals(emploees.get(i))) { tr = true; }
-        }
-        return tr;
-    }
+    public void buildEmploee(Emploee temp) { emploees.put(temp, temp.getId()); }
 }
 
