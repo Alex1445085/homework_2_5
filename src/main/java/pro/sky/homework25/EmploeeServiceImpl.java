@@ -1,4 +1,5 @@
 package pro.sky.homework25;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -12,13 +13,18 @@ public class EmploeeServiceImpl implements EmploeeServise {
     @Override
     public String addEmploee(String firstName, String lastName) {
         if (firstName.isEmpty() || lastName.isEmpty()) {
+            throw new FirstNameOrLastNameIsEmptyException();
+        }
+        if (!(StringUtils.isAlpha(firstName) && StringUtils.isAlpha(lastName))) {
             throw new BadRequestException();
         }
-        Emploee temp = new Emploee(firstName, lastName);
-        String word = "";
+        firstName = StringUtils.capitalize(firstName);
+        lastName = StringUtils.capitalize(lastName);
         if (emploees.size() >= maxEmploee) {
             throw new EmployeeStorageIsFullException();
         }
+        Emploee temp = new Emploee(firstName, lastName);
+        String word = "";
         if (emploees.containsKey(temp)) {
             throw new EmployeeAlreadyAddedException();
         } else {

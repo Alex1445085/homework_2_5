@@ -24,8 +24,10 @@ public class EmploeeController {
             return "Такой сотрудник уже существует.";
         } catch (EmployeeStorageIsFullException e) {
             return "Нельзя добавить сотрудника, полный штат.";
+        } catch (FirstNameOrLastNameIsEmptyException e) {
+            return "firstName or lastName is empty";
         } catch (BadRequestException e) {
-            return "BadRequestException";
+            return "400BadRequestException";
         }
     }
     @GetMapping("/del")
